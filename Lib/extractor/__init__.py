@@ -1,4 +1,5 @@
 from exceptions import ExtractorError
+from formats.glyphs import isGlyphs, extractFontFromGlyphs
 from formats.opentype import isOpenType, extractFontFromOpenType
 from formats.woff import isWOFF, extractFontFromWOFF
 from formats.type1 import isType1, extractFontFromType1
@@ -27,6 +28,9 @@ def extractUFO(pathOrFile, destination, doGlyphs=True, doInfo=True, doKerning=Tr
     elif isVFB(pathOrFile) and ".vfb" in supportedFormats:
         func = extractFontFromVFB
         format = "VFB"
+    elif isGlyphs(pathOrFile):
+        func = extractFontFromGlyphs
+        format = "glyphs"
     else:
         raise ExtractorError("Unknown file format.")
     # wrap the extraction in a try: except: so that
